@@ -11,4 +11,5 @@ class Motors {
         const int A1B = D4;
         const int B1A = D7;
         const int B2A = D2;
+        const int speed = 200; //PWM speed 0-255
 };
