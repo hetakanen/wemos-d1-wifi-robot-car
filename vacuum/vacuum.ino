@@ -1,6 +1,6 @@
-#include "ultrasonicSensor.h"
-#include "motors.h"
-#include "pauseButton.h"
+#include <UltrasonicSensor.h>
+#include <Motors.h>
+#include <PauseButton.h>
 
 UltrasonicSensor sensor;
 Motors motors;
@@ -27,11 +27,6 @@ void setup() {
   pauseButton.setup();
 }
 
-// Rules:
-// 1. Run/stop with button
-// 2. Turn 45 degrees left when distance low
-// 3. Go backwards when distance very low
-// 4. Otherwise go forward
 void loop() {
   const bool isButtonPressed = pauseButton.isPressed();
    if(isButtonPressed) {
