@@ -2,11 +2,15 @@
 
 Servo myservo;
 
-const int PIN = D3
+const int PIN = D3;
+const int LEFT = 2200;
+const int RIGHT = 1200;
+const int CENTER = 1750;
+
 void setup() {
   Serial.begin(9600);
-  myservo.attach(PIN, 1200, 2200);
-  myservo.write(110);
+  myservo.attach(PIN, RIGHT, LEFT);
+  myservo.write(CENTER);
 }
 
 // Allow user to give rotation value for SG90 servo via Serial Monitor
