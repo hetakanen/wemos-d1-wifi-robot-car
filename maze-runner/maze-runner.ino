@@ -8,12 +8,6 @@ PauseButton pauseButton;
 
 typedef void (*CallbackType)(float);
 
-class Distance {
-  public:
-    int rotation;
-    float distance;
-};
-
 enum Direction {
   FORWARD,
   BACKWARD,
@@ -32,40 +26,41 @@ const unsigned long loopDelay = 200;
 const float turnDistance = 20.0;
 const float minDistance = 10.0;
 
-Direction currentDirection;
-Looking currentLooking;
+struct Robot {
+  Direction direction;
+  Looking looking;
+  bool isRunning;
+};
 
-bool isRunning = false;
-
+Robot robot;
 void setup() {
   sensor.setup();
   motors.setup();
   pauseButton.setup();
 
-  currentDirection = Direction::FORWARD;
-  currentLooking = Looking::LOOK_CENTER;
+  robot = {Direction::FORWARD, Looking::LOOK_CENTER, false};
 }
 
 void loop() {
   const bool isButtonPressed = pauseButton.isPressed();
   if (isButtonPressed) {
-    isRunning = !isRunning;
+    robot.isRunning = !robot.isRunning;
   }
 
   const float distance = sensor.readDistance();
-  if (isRunning) {
-    if (currentDirection == Direction::FORWARD || currentDirection == Direction::BACKWARD) {
+  if (robot.isRunning) {
+    if (robot.direction == Direction::FORWARD || robot.direction == Direction::BACKWARD) {
       if (distance < minDistance) {
-        currentDirection = Direction::BACKWARD;
+        robot.direction = Direction::BACKWARD;
       } else if (distance < turnDistance) {
-        currentDirection = Direction::LOOKING;
-        currentLooking = Looking::LOOK_LEFT;
+        robot.direction = Direction::LOOKING;
+        robot.looking = Looking::LOOK_LEFT;
       } else {
-        currentDirection = Direction::FORWARD;
+        robot.direction = Direction::FORWARD;
       }
     }
 
-    switch (currentDirection) {
+    switch (robot.direction) {
       case Direction::FORWARD:
         motors.moveForward();
         break;
@@ -75,13 +70,13 @@ void loop() {
       case Direction::LEFT:
         motors.moveLeft();
         if(distance > turnDistance) {
-          currentDirection = Direction::FORWARD;
+          robot.direction = Direction::FORWARD;
         }
         break;
       case Direction::RIGHT:
         motors.moveRight();
         if(distance > turnDistance) {
-          currentDirection = Direction::FORWARD;
+          robot.direction = Direction::FORWARD;
         }
         break;
       case Direction::LOOKING:
@@ -98,31 +93,37 @@ void loop() {
   delay(loopDelay);
 }
 
+
+class Distance {
+  public:
+    int rotation;
+    float distance;
+};
 Distance longestDistance;
 void findDirection(float distance) {
-  switch (currentLooking) {
+  switch (robot.looking) {
     case Looking::LOOK_LEFT:
       lookAt(sensor.LEFT, [](float d) {
         if(d > longestDistance.distance) {
           longestDistance.distance = d;
           longestDistance.rotation = sensor.LEFT;
         }
-        currentLooking = Looking::LOOK_RIGHT;
+        robot.looking = Looking::LOOK_RIGHT;
       }, distance);
       break;
     case Looking::LOOK_CENTER:
       lookAt(sensor.CENTER, [](float d) {
         if(longestDistance.distance < turnDistance) {
-          currentDirection = Direction::BACKWARD;
+          robot.direction = Direction::BACKWARD;
         }
         else if(longestDistance.rotation == sensor.LEFT) {
-          currentDirection = Direction::LEFT;
+          robot.direction = Direction::LEFT;
         }
         else if(longestDistance.rotation == sensor.RIGHT) {
-          currentDirection = Direction::RIGHT;
+          robot.direction = Direction::RIGHT;
         }
         else {
-          currentDirection = Direction::BACKWARD;
+          robot.direction = Direction::BACKWARD;
         }
         longestDistance.distance = -1;
         longestDistance.rotation = -1;
@@ -134,7 +135,7 @@ void findDirection(float distance) {
           longestDistance.distance = d;
           longestDistance.rotation = sensor.RIGHT;
         }
-        currentLooking = Looking::LOOK_CENTER;
+        robot.looking = Looking::LOOK_CENTER;
       }, distance);
       break;
     default:
