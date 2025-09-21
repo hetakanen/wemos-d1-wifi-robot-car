@@ -1,10 +1,12 @@
 #include <UltrasonicSensor.h>
 #include <Motors.h>
 #include <PauseButton.h>
+#include <Led.h>
 
 UltrasonicSensor sensor;
 Motors motors;
 PauseButton pauseButton;
+Led led;
 
 typedef void (*CallbackType)(float);
 
@@ -26,6 +28,8 @@ const unsigned long loopDelay = 200;
 const float turnDistance = 20.0;
 const float minDistance = 10.0;
 
+long lastChangedTime = 0;
+
 struct Robot {
   Direction direction;
   Looking looking;
@@ -37,6 +41,8 @@ void setup() {
   sensor.setup();
   motors.setup();
   pauseButton.setup();
+  led.setup();
+  lastChangedTime = millis();
 
   robot = {Direction::FORWARD, Looking::LOOK_CENTER, false};
 }
@@ -47,8 +53,10 @@ void loop() {
     robot.isRunning = !robot.isRunning;
   }
 
-  const float distance = sensor.readDistance();
   if (robot.isRunning) {
+    const float distance = sensor.readDistance();
+    handleLed(distance);
+    
     if (robot.direction == Direction::FORWARD || robot.direction == Direction::BACKWARD) {
       if (distance < minDistance) {
         robot.direction = Direction::BACKWARD;
@@ -88,11 +96,21 @@ void loop() {
     }
   } else {
     motors.stop();
+    led.off();
   }
 
   delay(loopDelay);
 }
 
+void handleLed(float distance) {
+  const long currentTime = millis();
+  const bool shouldToggleLed = currentTime - lastChangedTime >= distance * 10;
+
+  if(shouldToggleLed) {
+    led.toggle();
+    lastChangedTime = millis();
+  }
+}
 
 class Distance {
   public:
