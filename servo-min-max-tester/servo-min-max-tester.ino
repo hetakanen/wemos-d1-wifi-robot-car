@@ -1,7 +1,7 @@
 #include <Servo.h>
 
 Servo myServo;
-const int PIN = D3
+const int PIN = D3;
 
 void setup() {
   myServo.attach(PIN, 1200, 2200);
