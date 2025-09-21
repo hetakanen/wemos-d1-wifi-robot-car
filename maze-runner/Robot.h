@@ -5,20 +5,25 @@
 #include <PauseButton.h>
 #include <Led.h>
 
+enum class Action
+{
+    MOVING,
+    LOOKING
+};
+
 enum class Direction
 {
     FORWARD,
     BACKWARD,
-    LEFT,
-    RIGHT,
-    LOOKING
+    TURN_LEFT,
+    TURN_RIGHT
 };
 
 enum class Looking
 {
-    LOOK_LEFT,
-    LOOK_CENTER,
-    LOOK_RIGHT
+    LEFT,
+    RIGHT,
+    CENTER
 };
 
 class Robot
@@ -29,11 +34,12 @@ public:
     PauseButton pauseButton;
     Led led;
 
-    Direction direction;
+    Action action;
+    Direction moving;
     Looking looking;
     bool isRunning;
 
-    Robot() : direction(Direction::FORWARD), looking(Looking::LOOK_CENTER), isRunning(false)
+    Robot() : action(Action::MOVING), moving(Direction::FORWARD), looking(Looking::CENTER), isRunning(false)
     {
         sensor.setup();
         motors.setup();

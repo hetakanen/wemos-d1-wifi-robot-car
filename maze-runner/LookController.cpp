@@ -4,16 +4,17 @@ void LookController::lookAround(float distance)
 {
     switch (robot.looking)
     {
-    case Looking::LOOK_LEFT:
-        handleLook(robot.sensor.LEFT, Looking::LOOK_RIGHT, distance);
+    case Looking::LEFT:
+        handleLook(robot.sensor.LEFT, Looking::RIGHT, distance);
         break;
-    case Looking::LOOK_RIGHT:
-        handleLook(robot.sensor.RIGHT, Looking::LOOK_CENTER, distance);
+    case Looking::RIGHT:
+        handleLook(robot.sensor.RIGHT, Looking::CENTER, distance);
         break;
-    case Looking::LOOK_CENTER:
+    case Looking::CENTER:
         lookAt(robot.sensor.CENTER, [this](float d)
                {
-            robot.direction = findDirection(longestDistance);
+            robot.moving = findDirection(longestDistance);
+            robot.action = Action::MOVING;
             longestDistance.reset(); }, distance);
         break;
     default:
@@ -37,11 +38,11 @@ Direction LookController::findDirection(const Distance &dist) const
     }
     if (dist.rotation == robot.sensor.LEFT)
     {
-        return Direction::LEFT;
+        return Direction::TURN_LEFT;
     }
     if (dist.rotation == robot.sensor.RIGHT)
     {
-        return Direction::RIGHT;
+        return Direction::TURN_RIGHT;
     }
     return Direction::BACKWARD;
 }

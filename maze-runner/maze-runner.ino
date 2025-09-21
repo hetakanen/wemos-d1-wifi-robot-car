@@ -25,51 +25,55 @@ void loop()
     const float distance = robot.sensor.readDistance();
     handleLed(distance);
 
-    if (robot.direction == Direction::FORWARD || robot.direction == Direction::BACKWARD)
+    if (robot.action == Action::LOOKING)
     {
-      if (distance < robot.minDistance)
-      {
-        robot.direction = Direction::BACKWARD;
-      }
-      else if (distance < robot.turnDistance)
-      {
-        robot.direction = Direction::LOOKING;
-        robot.looking = Looking::LOOK_LEFT;
-      }
-      else
-      {
-        robot.direction = Direction::FORWARD;
-      }
-    }
-
-    switch (robot.direction)
-    {
-    case Direction::FORWARD:
-      robot.motors.moveForward();
-      break;
-    case Direction::BACKWARD:
-      robot.motors.moveBackward();
-      break;
-    case Direction::LEFT:
-      robot.motors.moveLeft();
-      if (distance > robot.turnDistance)
-      {
-        robot.direction = Direction::FORWARD;
-      }
-      break;
-    case Direction::RIGHT:
-      robot.motors.moveRight();
-      if (distance > robot.turnDistance)
-      {
-        robot.direction = Direction::FORWARD;
-      }
-      break;
-    case Direction::LOOKING:
       robot.motors.stop();
       lookController.lookAround(distance);
-      break;
-    default:
-      break;
+    }
+    else
+    {
+      if (robot.moving == Direction::FORWARD || robot.moving == Direction::BACKWARD)
+      {
+        if (distance < robot.minDistance)
+        {
+          robot.moving = Direction::BACKWARD;
+        }
+        else if (distance < robot.turnDistance)
+        {
+          robot.action = Action::LOOKING;
+          robot.looking = Looking::LEFT;
+        }
+        else
+        {
+          robot.moving = Direction::FORWARD;
+        }
+      }
+
+      switch (robot.moving)
+      {
+      case Direction::FORWARD:
+        robot.motors.moveForward();
+        break;
+      case Direction::BACKWARD:
+        robot.motors.moveBackward();
+        break;
+      case Direction::TURN_LEFT:
+        robot.motors.moveLeft();
+        if (distance > robot.turnDistance)
+        {
+          robot.moving = Direction::FORWARD;
+        }
+        break;
+      case Direction::TURN_RIGHT:
+        robot.motors.moveRight();
+        if (distance > robot.turnDistance)
+        {
+          robot.moving = Direction::FORWARD;
+        }
+        break;
+      default:
+        break;
+      }
     }
   }
   else
