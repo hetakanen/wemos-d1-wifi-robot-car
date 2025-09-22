@@ -8,23 +8,24 @@
 class LookController
 {
 public:
-    LookController(const float &minDistance) : minDistance(minDistance) {
+    LookController(const float &minDistance) : minDistance(minDistance)
+    {
         sensor.setup();
     }
+
     using CallbackType = std::function<void(float)>;
     using AfterLookingCallback = std::function<void()>;
     using AfterLookingWithResultCallback = std::function<void(float, int)>;
-    Direction findDirection(const float distance, const int rotation) const;
 
+    Direction findDirection(const float distance, const int rotation) const;
     void lookLeft(float distance, AfterLookingCallback callback);
     void lookRight(float distance, AfterLookingCallback callback);
     void lookCenter(float distance, AfterLookingWithResultCallback callback);
-
     void rotateTo(int direction, CallbackType callback, float distance);
-    Distance longestDistance;
+
     UltrasonicSensor sensor;
 
 private:
     const float minDistance;
-
+    Distance longestDistance;
 };
