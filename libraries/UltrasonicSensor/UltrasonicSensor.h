@@ -1,4 +1,6 @@
+#pragma once
 #include <Servo.h>
+#include <Arduino.h>
 
 class UltrasonicSensor {
     public:

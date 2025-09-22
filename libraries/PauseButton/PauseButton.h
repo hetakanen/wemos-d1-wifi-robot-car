@@ -1,3 +1,6 @@
+#pragma once
+#include <Arduino.h>
+
 class PauseButton {
     public:
         PauseButton(int buttonPin = D0) : BUTTON(buttonPin) {}

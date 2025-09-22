@@ -1,3 +1,6 @@
+#pragma once
+#include <Arduino.h>
+
 class Motors {
     public:
         Motors(int a1aPin = D8, int a1bPin = D4, int b1aPin = D7, int b2aPin = D2, int pwmSpeed = 200)
