@@ -1,22 +1,30 @@
 #pragma once
+
+#include <UltrasonicSensor.h>
 #include "Distance.h"
-#include "Robot.h"
-#include "Arduino.h"
+#include "enums.h"
 #include <functional>
 
 class LookController
 {
 public:
-    LookController(Robot &robot) : robot(robot)
-    {
+    LookController(const float &minDistance) : minDistance(minDistance) {
+        sensor.setup();
     }
-    void lookAround(float distance);
+    using CallbackType = std::function<void(float)>;
+    using AfterLookingCallback = std::function<void()>;
+    using AfterLookingWithResultCallback = std::function<void(float, int)>;
+    Direction findDirection(const float distance, const int rotation) const;
+
+    void lookLeft(float distance, AfterLookingCallback callback);
+    void lookRight(float distance, AfterLookingCallback callback);
+    void lookCenter(float distance, AfterLookingWithResultCallback callback);
+
+    void rotateTo(int direction, CallbackType callback, float distance);
+    Distance longestDistance;
+    UltrasonicSensor sensor;
 
 private:
-    Robot &robot;
-    using CallbackType = std::function<void(float)>;
-    Distance longestDistance;
-    void handleLook(int sensorDir, Looking nextLook, float distance);
-    Direction findDirection(const Distance &dist) const;
-    void lookAt(int direction, CallbackType callback, float distance);
+    const float minDistance;
+
 };

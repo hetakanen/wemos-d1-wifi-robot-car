@@ -1,57 +1,54 @@
 #include "LookController.h"
 
-void LookController::lookAround(float distance)
+void LookController::lookLeft(float distance, AfterLookingCallback callback)
 {
-    switch (robot.looking)
-    {
-    case Looking::LEFT:
-        handleLook(robot.sensor.LEFT, Looking::RIGHT, distance);
-        break;
-    case Looking::RIGHT:
-        handleLook(robot.sensor.RIGHT, Looking::CENTER, distance);
-        break;
-    case Looking::CENTER:
-        lookAt(robot.sensor.CENTER, [this](float d)
-               {
-            robot.moving = findDirection(longestDistance);
-            robot.action = Action::MOVING;
-            longestDistance.reset(); }, distance);
-        break;
-    default:
-        break;
-    }
+    rotateTo(sensor.LEFT, [this, callback](float d)
+             {
+
+        longestDistance.updateIfLonger(sensor.LEFT, d);
+        callback(); }, distance);
 }
 
-void LookController::handleLook(int sensorDir, Looking nextLook, float distance)
+void LookController::lookRight(float distance, AfterLookingCallback callback)
 {
-    lookAt(sensorDir, [this, sensorDir, nextLook](float d)
-           {
-        longestDistance.updateIfLonger(sensorDir, d);
-        robot.looking = nextLook; }, distance);
+    rotateTo(sensor.RIGHT, [this, callback](float d)
+             {
+
+        longestDistance.updateIfLonger(sensor.RIGHT, d);
+
+        callback(); }, distance);
 }
 
-Direction LookController::findDirection(const Distance &dist) const
+void LookController::lookCenter(float distance, AfterLookingWithResultCallback callback)
 {
-    if (dist.distance <= robot.minDistance)
+    rotateTo(sensor.CENTER, [this, callback](float d)
+             {
+                callback(longestDistance.distance, longestDistance.rotation);
+                longestDistance.reset(); }, distance);
+}
+
+Direction LookController::findDirection(const float distance, const int rotation) const
+{
+    if (distance <= minDistance)
     {
         return Direction::BACKWARD;
     }
-    if (dist.rotation == robot.sensor.LEFT)
+    if (rotation == sensor.LEFT)
     {
         return Direction::TURN_LEFT;
     }
-    if (dist.rotation == robot.sensor.RIGHT)
+    if (rotation == sensor.RIGHT)
     {
         return Direction::TURN_RIGHT;
     }
     return Direction::BACKWARD;
 }
 
-void LookController::lookAt(int direction, CallbackType callback, float distance)
+void LookController::rotateTo(int direction, CallbackType callback, float distance)
 {
-    if (robot.sensor.getRotation() != direction)
+    if (sensor.getRotation() != direction)
     {
-        robot.sensor.lookAt(direction);
+        sensor.lookAt(direction);
     }
     else
     {
