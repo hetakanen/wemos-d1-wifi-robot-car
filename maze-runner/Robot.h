@@ -1,51 +1,36 @@
 #pragma once
 
-#include <UltrasonicSensor.h>
 #include <Motors.h>
 #include <PauseButton.h>
-#include <Led.h>
 
-enum class Action
-{
-    MOVING,
-    LOOKING
-};
-
-enum class Direction
-{
-    FORWARD,
-    BACKWARD,
-    TURN_LEFT,
-    TURN_RIGHT
-};
-
-enum class Looking
-{
-    LEFT,
-    RIGHT,
-    CENTER
-};
+#include "LookController.h"
+#include "LedController.h"
+#include "MoveController.h"
+#include "enums.h"
 
 class Robot
 {
 public:
-    UltrasonicSensor sensor;
-    Motors motors;
+    MoveController moveController;
     PauseButton pauseButton;
-    Led led;
+
+    LedController ledController;
+    LookController lookController{minDistance};
 
     Action action;
-    Direction moving;
+    
     Looking looking;
+    Direction moving;
     bool isRunning;
 
-    Robot() : action(Action::MOVING), moving(Direction::FORWARD), looking(Looking::CENTER), isRunning(false)
+    Robot() : action(Action::MOVING), looking(Looking::LEFT), moving(Direction::FORWARD), isRunning(false)
     {
-        sensor.setup();
-        motors.setup();
         pauseButton.setup();
-        led.setup();
     }
+
+    void stop();
+    void look(float distance);
+    void move(float distance);
 
     const float turnDistance = 20.0;
     const float minDistance = 10.0;
