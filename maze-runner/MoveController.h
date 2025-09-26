@@ -9,7 +9,7 @@ public:
     {
         motors.setup();
     }
-    Motors motors{220, 200};
+    Motors motors{230, 200};
     bool shouldBackup(Direction moving, float distance, float minDistance);
     bool shouldMove(Direction moving, float distance, float turnDistance);
     bool shouldTurn(Direction moving, float distance, float turnDistance);
