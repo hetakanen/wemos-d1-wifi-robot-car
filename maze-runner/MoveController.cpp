@@ -2,27 +2,26 @@
 
 bool MoveController::shouldTurn(Direction moving, float distance, float turnDistance)
 {
-    if (moving == Direction::FORWARD || moving == Direction::BACKWARD)
+    if (moving == Direction::FORWARD)
     {
-        return distance < turnDistance;
+        return distance <= turnDistance;
+    }
+    else if(moving == Direction::BACKWARD) {
+        return distance >= turnDistance;
     }
     return false;
 }
 
 bool MoveController::shouldBackup(Direction moving, float distance, float minDistance)
 {
-    return distance < minDistance;
+    return distance <= minDistance;
 }
 
-bool MoveController::shouldMove(Direction moving, float distance, float turnDistance)
+bool MoveController::shouldMove(Direction moving, float distance, float forwardDistance)
 {
     if (moving == Direction::TURN_LEFT || moving == Direction::TURN_RIGHT)
     {
-        return distance > turnDistance;
-    }
-    else if (moving == Direction::FORWARD || moving == Direction::BACKWARD)
-    {
-        return distance >= turnDistance;
+        return distance >= forwardDistance;
     }
     return false;
 }
