@@ -2,7 +2,7 @@
 
 Robot robot;
 
-const unsigned long loopDelay = 200;
+const unsigned long loopDelay = 50;
 
 void setup()
 {
@@ -18,21 +18,23 @@ void loop()
 
   if (robot.isRunning)
   {
-    const float distance = robot.lookController.sensor.readDistance();
-    const bool shouldToggle = robot.ledController.getShouldToggle(distance);
-    if (shouldToggle)
-    {
-      robot.ledController.toggle();
-    }
-
     switch (robot.action)
     {
-    case Action::MOVING:
+    case Action::MOVING: {
+      float distance = robot.lookController.sensor.readDistance();
+      const bool shouldToggle = robot.ledController.getShouldToggle(distance);
+      if (shouldToggle)
+      {
+        robot.ledController.toggle();
+      }
+
       robot.move(distance);
       break;
+    }
     case Action::LOOKING:
       robot.stop();
-      robot.look(distance);
+      robot.ledController.off();
+      robot.look();
       break;
     default:
       break;
