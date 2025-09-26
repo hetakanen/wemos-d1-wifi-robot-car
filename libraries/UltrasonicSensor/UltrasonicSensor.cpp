@@ -1,6 +1,7 @@
 #include "ultrasonicSensor.h"
 
-void UltrasonicSensor::setup() {
+void UltrasonicSensor::setup()
+{
   pinMode(TRIGGER, OUTPUT);
   pinMode(ECHO, INPUT);
 
@@ -8,7 +9,8 @@ void UltrasonicSensor::setup() {
   myservo.write(CENTER);
 }
 
-float UltrasonicSensor::readDistance() {
+float UltrasonicSensor::readDistance()
+{
   const float speedOfLight = 0.034;
 
   digitalWrite(TRIGGER, LOW);
@@ -21,10 +23,17 @@ float UltrasonicSensor::readDistance() {
   return (duration * speedOfLight) / 2;
 }
 
-void UltrasonicSensor::lookAt(int value) {
+void UltrasonicSensor::lookAt(int value)
+{
   myservo.writeMicroseconds(value);
 }
 
-int UltrasonicSensor::getRotation() {
+int UltrasonicSensor::getRotation()
+{
   return myservo.readMicroseconds();
+}
+
+void UltrasonicSensor::addDelay(int value)
+{
+  delay(value);
 }
