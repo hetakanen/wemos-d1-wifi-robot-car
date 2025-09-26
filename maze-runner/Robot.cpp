@@ -1,5 +1,4 @@
 #include "Robot.h"
-
 void Robot::stop()
 {
     moveController.motors.stop();
@@ -8,6 +7,7 @@ void Robot::stop()
 
 void Robot::move(float distance)
 {
+    const unsigned long currentTime = millis();
     if (moveController.shouldBackup(moving, distance, minDistance))
     {
         moving = Direction::BACKWARD;
@@ -17,7 +17,7 @@ void Robot::move(float distance)
         action = Action::LOOKING;
         looking = Looking::LEFT;
     }
-    else if (moveController.shouldMove(moving, distance, turnDistance))
+    else if (moveController.shouldMove(moving, distance, forwardDistance))
     {
         moving = Direction::FORWARD;
     }
@@ -25,20 +25,20 @@ void Robot::move(float distance)
     moveController.move(moving);
 }
 
-void Robot::look(float distance)
+void Robot::look()
 {
     switch (looking)
     {
     case Looking::LEFT:
-        lookController.lookLeft(distance, [this]()
+        lookController.lookLeft([this]()
                                 { looking = Looking::RIGHT; });
         break;
     case Looking::RIGHT:
-        lookController.lookRight(distance, [this]()
+        lookController.lookRight([this]()
                                  { looking = Looking::CENTER; });
         break;
     case Looking::CENTER:
-        lookController.lookCenter(distance, [this](float dist, int rot)
+        lookController.lookCenter([this](float dist, int rot)
                                   {
             moving = lookController.findDirection(dist, rot);
             action = Action::MOVING; });

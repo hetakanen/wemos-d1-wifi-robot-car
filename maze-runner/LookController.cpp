@@ -1,30 +1,27 @@
 #include "LookController.h"
 
-void LookController::lookLeft(float distance, AfterLookingCallback callback)
+void LookController::lookLeft(AfterLookingCallback callback)
 {
     rotateTo(sensor.LEFT, [this, callback](float d)
              {
-
+        longestDistance.reset();
         longestDistance.updateIfLonger(sensor.LEFT, d);
-        callback(); }, distance);
+        callback(); });
 }
 
-void LookController::lookRight(float distance, AfterLookingCallback callback)
+void LookController::lookRight(AfterLookingCallback callback)
 {
     rotateTo(sensor.RIGHT, [this, callback](float d)
              {
 
         longestDistance.updateIfLonger(sensor.RIGHT, d);
-
-        callback(); }, distance);
+        callback(); });
 }
 
-void LookController::lookCenter(float distance, AfterLookingWithResultCallback callback)
+void LookController::lookCenter(AfterLookingWithResultCallback callback)
 {
     rotateTo(sensor.CENTER, [this, callback](float d)
-             {
-                callback(longestDistance.distance, longestDistance.rotation);
-                longestDistance.reset(); }, distance);
+             { callback(longestDistance.distance, longestDistance.rotation); });
 }
 
 Direction LookController::findDirection(const float distance, const int rotation) const
@@ -44,7 +41,7 @@ Direction LookController::findDirection(const float distance, const int rotation
     return Direction::BACKWARD;
 }
 
-void LookController::rotateTo(int direction, CallbackType callback, float distance)
+void LookController::rotateTo(int direction, CallbackType callback)
 {
     if (sensor.getRotation() != direction)
     {
@@ -52,6 +49,8 @@ void LookController::rotateTo(int direction, CallbackType callback, float distan
     }
     else
     {
-        callback(distance);
+        sensor.addDelay();
+        const float d = sensor.readDistance();
+        callback(d);
     }
 }

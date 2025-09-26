@@ -18,10 +18,10 @@ public:
     using AfterLookingWithResultCallback = std::function<void(float, int)>;
 
     Direction findDirection(const float distance, const int rotation) const;
-    void lookLeft(float distance, AfterLookingCallback callback);
-    void lookRight(float distance, AfterLookingCallback callback);
-    void lookCenter(float distance, AfterLookingWithResultCallback callback);
-    void rotateTo(int direction, CallbackType callback, float distance);
+    void lookLeft(AfterLookingCallback callback);
+    void lookRight(AfterLookingCallback callback);
+    void lookCenter(AfterLookingWithResultCallback callback);
+    void rotateTo(int direction, CallbackType callback);
 
     UltrasonicSensor sensor;
 

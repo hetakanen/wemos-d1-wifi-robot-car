@@ -8,6 +8,8 @@
 #include "MoveController.h"
 #include "enums.h"
 
+#include <Arduino.h>
+
 class Robot
 {
 public:
@@ -25,13 +27,17 @@ public:
 
     Robot() : action(Action::MOVING), looking(Looking::LEFT), moving(Direction::FORWARD), isRunning(false)
     {
+        Serial.begin(9600);
         pauseButton.setup();
     }
 
     void stop();
-    void look(float distance);
+    void look();
     void move(float distance);
 
+    const float forwardDistance = 30.0;
     const float turnDistance = 20.0;
     const float minDistance = 10.0;
+private:
+    unsigned long timeStartedMovingBack;
 };
