@@ -13,7 +13,6 @@ void LookController::lookRight(AfterLookingCallback callback)
 {
     rotateTo(sensor.RIGHT, [this, callback](float d)
              {
-
         longestDistance.updateIfLonger(sensor.RIGHT, d);
         callback(); });
 }
