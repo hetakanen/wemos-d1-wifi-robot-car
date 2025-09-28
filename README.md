@@ -1,26 +1,39 @@
-# Tools
+# Smart Robot Car
 
-*Programming smart robot car*
+## Overview
 
-Uses following components:
-- WeMos D1 WiFi development board with expansion board
-- L9110 motor driver board with two DC motors and wheels
-- SG90 Servo that rotates HC-SR04 Ultrasonic module
+This project replicates a school robotics assignment: programming a smart robot car capable of navigating a maze by detecting obstacles and determining a path to the end using distance estimation
 
-Developed with:
-- Arduino IDE with LOLIN(WeMos) D1 R1 board (esp8266)
-- Package downloaded from: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+*Objectives*
+- Navigate through a maze autonomously
+- Detect and avoid obstacles using an ultrasonic sensor
+- Reach the end of the maze without manual control
 
-Links:
+## Hardware Components
 
-Board setup
-https://youtu.be/axMJ49SaPzs?si=YMEUWQinm7qA4o_y
+Components included in the base kit:
+- WeMos D1 WiFi Development Board (ESP8266) with expansion board
+- L9110 Motor Driver Module, Controls two DC motors for forward and backward movement
+- Two wheels and Universal Ball Wheel
+- SG90 Servo Motor, rotates the HC-SR04 Ultrasonic Sensor which allows distance measurement across different angles
 
-Motors
-https://youtu.be/YkfBtjs8uWg?si=xsP2hA9-NE136Kpf
+Miscellaneous:
+- Jumper wires
+- Battery box
+- Mounting hardware (plates, pillars, screws, etc.)
 
-Servo.h
-https://youtu.be/n2qk5rNmJ0U?si=YPUB7H6xRMOYJphP
+Additional components:
+- Yellow LED for distance status indication
+- Push Button for manual start or mode selection
+- Lithium-Ion Batteries for power supply
 
-Ultrasonic sensor
-https://youtu.be/ZqQgxgnH9wg?si=sTL2xnQjTXRjncxc
+## Software & Tools
+
+- Arduino IDE & VSCode
+
+Board:
+- LOLIN(WeMos) D1 R1 board (esp8266)
+- Package URL: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+
+Libraries:
+- Servo.h (for controlling the SG90 servo)
