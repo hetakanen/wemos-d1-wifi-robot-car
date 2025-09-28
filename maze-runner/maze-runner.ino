@@ -1,3 +1,14 @@
+/******************************************************************************
+ * Obstacle-Avoiding Robot Car
+ * - Uses an ultrasonic sensor to measure distance while moving
+ * - If an obstacle is detected nearby, the car stops and uses servo to scan 
+ *   left, right, and center
+ * - It determines the direction with the most clearance and turns accordingly
+ * - If too close to an obstacle, the car moves backward
+ * - Blinking LED indicates distance to obstacle
+ * - Power can be toggled on/off with a button
+ ******************************************************************************/
+
 #include "Robot.h"
 
 Robot robot;
