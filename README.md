@@ -1,8 +1,10 @@
-# Smart Robot Car
+# :wrench: Smart Robot Car :car:
 
 ## Overview
 
 This project replicates a school robotics assignment: programming a smart robot car capable of navigating a maze by detecting obstacles and determining a path to the end using distance estimation
+
+<img loading="lazy" src="./img/banner_sm.jpg"/>
 
 *Objectives*
 - Navigate through a maze autonomously
