@@ -31,6 +31,8 @@ Additional components:
 
 ## Software & Tools
 
+<img loading="lazy" src="./img/board_sm.jpg"/>
+
 - Arduino IDE & VSCode
 
 Board:
