@@ -14,6 +14,4 @@ public:
     bool shouldMove(Direction moving, float distance, float turnDistance);
     bool shouldTurn(Direction moving, float distance, float turnDistance);
     void move(Direction moving);
-
-private:
 };
