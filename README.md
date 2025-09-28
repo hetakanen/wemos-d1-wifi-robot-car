@@ -39,7 +39,7 @@ Additional components:
 - Arduino IDE & VSCode
 
 Board:
-- LOLIN(WeMos) D1 R1 board (esp8266)
+- LOLIN(WeMos) D1 R1 board (esp8266), uses custom library not provided by Arduino Library Manager
 - Package URL: http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
 Libraries:
