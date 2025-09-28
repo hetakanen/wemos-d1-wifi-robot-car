@@ -15,12 +15,10 @@ class Robot
 public:
     MoveController moveController;
     PauseButton pauseButton;
-
     LedController ledController;
     LookController lookController{minDistance};
 
     Action action;
-    
     Looking looking;
     Direction moving;
     bool isRunning;
