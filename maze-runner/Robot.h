@@ -8,8 +8,6 @@
 #include "MoveController.h"
 #include "enums.h"
 
-#include <Arduino.h>
-
 class Robot
 {
 public:
@@ -25,7 +23,6 @@ public:
 
     Robot() : action(Action::MOVING), looking(Looking::LEFT), moving(Direction::FORWARD), isRunning(false)
     {
-        Serial.begin(9600);
         pauseButton.setup();
     }
 
