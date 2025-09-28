@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Led.h"
 #include <Arduino.h>
 
