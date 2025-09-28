@@ -6,10 +6,13 @@ This project replicates a school robotics assignment: programming a smart robot 
 
 <img loading="lazy" src="./img/banner_sm.jpg"/>
 
-*Objectives*
+<b>Objectives</b>
 - Navigate through a maze autonomously
 - Detect and avoid obstacles using an ultrasonic sensor
 - Reach the end of the maze without manual control
+
+:heavy_check_mark: Check the folders ending in `*-tester` for component verification  
+:heavy_check_mark: For final results, see the `/vacuum` directory for **v1** and `/maze-runner` for **v2**
 
 ## Hardware Components
 
